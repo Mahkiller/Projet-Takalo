@@ -1,0 +1,79 @@
+Phase 1 : Initialisation du Projet (La Base)
+1. Préparer l'environnement :
+
+Mettre en place le serveur local (XAMPP/WAMP/LAMP).
+Créer une base de données (Mysql)
+2. Concevoir la Base de Données :
+
+Créer le script SQL pour les tables essentielles. 
+Utilisateur (id, nom, email, mot_de_passe)
+Categorie (id, nom_categorie)
+Objet (id, id_utilisateur, id_categorie, titre, description, prix_estimatif)
+PhotoObjet (id, id_objet, chemin_photo)
+Echange (id, id_objet1, id_objet2, id_user1, id_user2, date_proposition, statut) statut peut être 'en attente', 'accepté', 'refusé'
+
+3. Mettre en place le Framework :
+
+Configurer FlightMvc dans le dossier du projet.
+Établir la connexion à la base de données.
+
+Structure du Projet
+- app/
+  - config/      (pour la configuration, ex: connexion BDD)
+  - controllers/ (pour la logique des pages)
+  - models/      (pour les interactions avec la BDD)
+- database/
+  - db.sql       (le script de création de la base de données)
+- public/        (le seul dossier accessible depuis le navigateur)
+  - assets/
+    - css/
+      - style.css
+      - les css du bootstrap
+    - js/
+  - views/       (les fichiers HTML/PHP pour l'affichage)
+  - .htaccess    (pour la réécriture d'URL avec FlightPHP)
+  - index.php    (le point d'entrée de l'application)
+- vendor/        (géré par Composer, contient les librairies)
+- composer.json  (définit les dépendances du projet)
+- composer.lock  (verrouille les versions des dépendances)
+
+4. Créer des données de test :
+
+Insérer manuellement quelques utilisateurs et catégories dans la base de données pour pouvoir tester rapidement.
+Phase 2 : Fonctionnalités Essentielles (Le Cœur de l'Application)
+
+1. Backoffice - Gestion des Catégories :
+
+Créer la page de login pour l'admin.
+Créer l'interface pour que l'admin puisse Ajouter, Modifier et Supprimer des catégories. C'est une priorité car les utilisateurs en auront besoin.
+
+2. Frontoffice - Utilisateurs et Objets :
+
+Créer la page de login / inscription automatique pour les utilisateurs.
+Créer la page où un utilisateur peut voir ses propres objets et en ajouter un (formulaire avec titre, description, catégorie, etc.).
+Créer la page qui liste tous les objets des autres utilisateurs.
+
+3. Frontoffice - Le Processus d'Échange :
+
+Sur la page de détail d'un objet, ajouter un bouton "Proposer un échange".
+Créer la page où l'utilisateur peut voir les propositions qu'il a reçues.
+Implémenter la logique pour Accepter un échange (changer le id_utilisateur des deux objets) ou le Refuser. C'est l'étape la plus critique 
+Phase 3 : Fonctionnalités Avancées et Finitions (Les "Bonus")
+
+1. Barre de Recherche :
+
+Ajouter un formulaire de recherche sur la page de liste des objets (recherche par mot-clé et par catégorie).
+
+2. Historique de l'Objet :
+
+Lorsqu'un échange est accepté, enregistrer l'information dans une nouvelle table Historique (id_objet, id_ancien_proprietaire, id_nouveau_proprietaire, date_echange).
+Créer la page qui affiche cet historique pour un objet donné.
+
+3. Statistiques Admin :
+
+Créer la page de statistiques pour l'admin (compter les utilisateurs et les échanges acceptés).
+
+4. Finalisation :
+
+Ajouter le nom et numéro ETU dans le footer de toutes les pages.
+Vérifier que tout fonctionne et peaufiner le design.
