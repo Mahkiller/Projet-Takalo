@@ -40,3 +40,18 @@ CREATE TABLE PhotoObjet_takalo (
     date_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_objet) REFERENCES Objet_takalo(id) ON DELETE CASCADE
 );
+
+-- Table des échanges
+CREATE TABLE Echange_takalo (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_objet1 INT NOT NULL,
+    id_objet2 INT NOT NULL,
+    id_user1 INT NOT NULL,
+    id_user2 INT NOT NULL,
+    date_proposition TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    statut ENUM('en attente', 'accepté', 'refusé') DEFAULT 'en attente',
+    FOREIGN KEY (id_objet1) REFERENCES Objet_takalo(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_objet2) REFERENCES Objet_takalo(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_user1) REFERENCES Utilisateur_takalo(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_user2) REFERENCES Utilisateur_takalo(id) ON DELETE CASCADE
+);
