@@ -1,79 +1,80 @@
-Phase 1 : Initialisation du Projet (La Base)
-1. Préparer l'environnement :
+Fichiers / Dossiers principaux
 
-Mettre en place le serveur local (XAMPP/WAMP/LAMP).
-Créer une base de données (Mysql)
-2. Concevoir la Base de Données :
+app/ → code principal
+public/ → ce que l’utilisateur voit
+models/ → pour interagir avec la base
+controllers/ → logique des pages
+views/ → ce qui s’affiche
 
-Créer le script SQL pour les tables essentielles. 
-Utilisateur (id, nom, email, mot_de_passe)
-Categorie (id, nom_categorie)
-Objet (id, id_utilisateur, id_categorie, titre, description, prix_estimatif)
-PhotoObjet (id, id_objet, chemin_photo)
-Echange (id, id_objet1, id_objet2, id_user1, id_user2, date_proposition, statut) statut peut être 'en attente', 'accepté', 'refusé'
 
-3. Mettre en place le Framework :
 
-Configurer FlightMvc dans le dossier du projet.
-Établir la connexion à la base de données.
+(ok)Général 
 
-Structure du Projet
-- app/
-  - config/      (pour la configuration, ex: connexion BDD)
-  - controllers/ (pour la logique des pages)
-  - models/      (pour les interactions avec la BDD)
-- database/
-  - db.sql       (le script de création de la base de données)
-- public/        (le seul dossier accessible depuis le navigateur)
-  - assets/
-    - css/
-      - style.css
-      - les css du bootstrap
-    - js/
-  - views/       (les fichiers HTML/PHP pour l'affichage)
-  - .htaccess    (pour la réécriture d'URL avec FlightPHP)
-  - index.php    (le point d'entrée de l'application)
-- vendor/        (géré par Composer, contient les librairies)
-- composer.json  (définit les dépendances du projet)
-- composer.lock  (verrouille les versions des dépendances)
+ Création de la base de données (Mahery)
 
-4. Créer des données de test :
+  Tables :
 
-Insérer manuellement quelques utilisateurs et catégories dans la base de données pour pouvoir tester rapidement.
-Phase 2 : Fonctionnalités Essentielles (Le Cœur de l'Application)
+    -Utilisateur_takalo : id, nom, email, mot_de_passe
+    -Categorie_takalo : id, nom_categorie
+    -Objet_takalo: id, id_utilisateur, id_categorie, titre, description, prix_estimatif
+    -PhotoObjet_takalo: id, id_objet, chemin_photo
+    -Echange_takalo: id, id_objet1, id_objet2, id_user1, id_user2, date_proposition, statut (`en attente`, `accepté`, `refusé`)
 
-1. Backoffice - Gestion des Catégories :
+ Ajouter des données de test (utilisateurs, catégories, objets) pour tester rapidement
 
-Créer la page de login pour l'admin.
-Créer l'interface pour que l'admin puisse Ajouter, Modifier et Supprimer des catégories. C'est une priorité car les utilisateurs en auront besoin.
 
-2. Frontoffice - Utilisateurs et Objets :
+(ok)app/ (Tsila)
 
-Créer la page de login / inscription automatique pour les utilisateurs.
-Créer la page où un utilisateur peut voir ses propres objets et en ajouter un (formulaire avec titre, description, catégorie, etc.).
-Créer la page qui liste tous les objets des autres utilisateurs.
+config/
 
-3. Frontoffice - Le Processus d'Échange :
+config.php → connexion à la base de données
+services.php → services nécessaires au projet
+routes.php → définir toutes les routes de l’application et préparer le projet avant de lancer les pages
 
-Sur la page de détail d'un objet, ajouter un bouton "Proposer un échange".
-Créer la page où l'utilisateur peut voir les propositions qu'il a reçues.
-Implémenter la logique pour Accepter un échange (changer le id_utilisateur des deux objets) ou le Refuser. C'est l'étape la plus critique 
-Phase 3 : Fonctionnalités Avancées et Finitions (Les "Bonus")
 
-1. Barre de Recherche :
 
-Ajouter un formulaire de recherche sur la page de liste des objets (recherche par mot-clé et par catégorie).
+(ok)Page de Connexion (Tsila)
 
-2. Historique de l'Objet :
+Créer le formulaire login (email + mot de passe) → views/login.php
+Vérifier les infos en base → controllers/UserController.php / models/User.php
+Créer une session → **controllers/UserController.php**
+Rediriger selon le rôle :
 
-Lorsqu'un échange est accepté, enregistrer l'information dans une nouvelle table Historique (id_objet, id_ancien_proprietaire, id_nouveau_proprietaire, date_echange).
-Créer la page qui affiche cet historique pour un objet donné.
+  Admin → page gestion
+  Utilisateur → page home
 
-3. Statistiques Admin :
 
-Créer la page de statistiques pour l'admin (compter les utilisateurs et les échanges acceptés).
+(en cours)Navbar (Tsila)
 
-4. Finalisation :
+Vérifier rôle pour afficher les menus :
 
-Ajouter le nom et numéro ETU dans le footer de toutes les pages.
-Vérifier que tout fonctionne et peaufiner le design.
+Utilisateur : Home – Catégorie – Contact
+Admin : Home – Catégorie – Contact – Gestion
+Implémentation via un simple `if` sur le rôle → views/header.php / views/navbar.php
+
+
+(ok)Pages Utilisateur (Tsila)
+
+Home → voir tous les objets des autres → views/home.php / controllers/ObjectController.php
+Mes objets → voir, ajouter, modifier, supprimer ses propres objets → views/mes_objets.php / controllers/ObjectController.php / models/Objet.php
+Détail objet → proposer un échange → views/detail_objet.php / controllers/EchangeController.php / models/Echange.php
+Propositions reçues → accepter ou refuser un échange → views/propositions.php / controllers/EchangeController.php
+
+Logique principale : quand un échange est accepté, les objets changent de propriétaire
+
+
+
+Pages Admin (Tsila)
+
+Gestion catégories → ajouter, modifier, supprimer → views/admin_categories.php / controllers/AdminController.php / models/Categorie.php
+Gestion utilisateurs → voir la liste et supprimer si besoin → views/admin_users.php / controllers/AdminController.php / models/User.php
+Statistiques → nombre d’utilisateurs, objets et échanges acceptés → views/admin_stats.php / controllers/AdminController.php
+
+
+Bonus et améliorations (Magy)
+
+Design de toutes les pages → public/assets/css/style.css + views
+Barre de recherche (mot-clé + filtre par catégorie) → views/home.php / controllers/ObjectController.php
+Historique des échanges → models/Historique.php / views/historique.php / controllers/EchangeController.php
+Footer avec le nom et numéro ETU de chaque membre → views/footer.php
+
